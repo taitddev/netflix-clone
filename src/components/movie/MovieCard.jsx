@@ -1,12 +1,14 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { withErrorBoundary } from "react-error-boundary";
 import { AiFillStar } from "react-icons/ai";
 import { BsPlusLg } from "react-icons/bs";
-import { FaPlayCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 
 import { tmdbAPI } from "../../config";
 import { getYear } from "../../utils/utils";
+import Button from "../button/Button";
+import { FaPlayCircle } from "react-icons/fa";
 
 const MovieCard = ({ movie }) => {
   const { title, release_date, vote_average, poster_path, id } = movie;
@@ -35,20 +37,32 @@ const MovieCard = ({ movie }) => {
             </div>
           </div>
 
-          <button
-            className="btn-primary flex items-center gap-1 w-full justify-center mt-auto"
+          <Button
             onClick={() => {
               navigate(`/movie/${id}`);
             }}
+            className="btn-primary mt-auto"
           >
-            <p>Watch now</p>
+            <span>Xem</span>
             <FaPlayCircle fontSize={22} />
-          </button>
+          </Button>
         </div>
       </div>
     </>
   );
 };
+
+function FallbackComponent() {
+  return (
+    <p className="bg-red-50 text-red-400">
+      Something went wrong with this component
+    </p>
+  );
+}
+
+export default withErrorBoundary(MovieCard, {
+  FallbackComponent,
+});
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
@@ -59,5 +73,3 @@ MovieCard.propTypes = {
     id: PropTypes.number,
   }),
 };
-
-export default MovieCard;

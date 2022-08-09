@@ -25,11 +25,11 @@
   }
 
   .btn-primary {
-    @apply bg-primary px-10 py-4 rounded-xl font-bold;
+    @apply bg-primary px-10 py-4 rounded-xl font-bold flex items-center justify-center gap-1;
   }
 
   .section-title {
-    @apply capitalize text-white mb-5 text-2xl font-bold;
+    @apply capitalize mb-8 text-2xl font-bold;
   }
 
   .banner .swiper {
@@ -51,4 +51,25 @@
   .genre {
     @apply border-2 px-4 py-2 bg-gray-900 bg-opacity-60;
   }
+
+  .pagination {
+    @apply flex items-center justify-center gap-5 py-2;
+
+    li {
+      @apply py-2 px-4;
+    }
+
+    .selected {
+      @apply bg-primary font-bold rounded-md;
+    }
+
+    .disabled {
+      @apply pointer-events-none;
+    }
+  }
+}
+
+.react-loading-skeleton {
+  --base-color: rgba(0, 0, 0, 0.2);
+  --highlight-color: rgba(0, 0, 0, 0);
 }

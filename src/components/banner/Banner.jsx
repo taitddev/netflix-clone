@@ -5,9 +5,10 @@ import "swiper/scss";
 
 import { fetcher, tmdbAPI } from "../../config";
 import BannerItem from "./BannerItem";
+import BannerItemSkeleton from "./BannerItemSkeleton";
 
 const Banner = () => {
-  const { data: moviesResponse } = useSWR(
+  const { data: moviesResponse, error } = useSWR(
     tmdbAPI.getMovieList("upcoming"),
     fetcher
   );
@@ -15,19 +16,30 @@ const Banner = () => {
 
   const { data: genresResponse } = useSWR(tmdbAPI.getGenres(), fetcher);
   const genres = genresResponse?.genres || [];
+  const isLoading = !moviesResponse && !error;
 
   return (
     <>
-      <section className="banner h-[500px] container overflow-hidden">
-        <Swiper grabCursor slidesPerView={"auto"}>
-          {movies.length > 0 &&
-            movies.map((movie) => (
-              <SwiperSlide key={movie.id}>
-                <BannerItem movie={movie} genres={genres} />
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      </section>
+      {isLoading ? (
+        <section className="banner h-[500px] container overflow-hidden">
+          <Swiper grabCursor slidesPerView={"auto"}>
+            <SwiperSlide>
+              <BannerItemSkeleton />
+            </SwiperSlide>
+          </Swiper>
+        </section>
+      ) : (
+        <section className="banner h-[500px] container overflow-hidden">
+          <Swiper grabCursor slidesPerView={"auto"}>
+            {movies.length > 0 &&
+              movies.map((movie) => (
+                <SwiperSlide key={movie.id}>
+                  <BannerItem movie={movie} genres={genres} />
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </section>
+      )}
     </>
   );
 };

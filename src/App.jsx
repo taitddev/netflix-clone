@@ -12,6 +12,7 @@ function App() {
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/movies" element={<MoviePage />}></Route>
           <Route path="/movie/:movieId" element={<MovieDetails />}></Route>
+          <Route path="*" element={<>Page Not found</>}></Route>
         </Route>
       </Routes>
     </>

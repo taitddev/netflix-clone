@@ -19,7 +19,7 @@ const Header = () => {
             `text-lg ${isActive ? "text-primary font-bold" : ""}`
           }
         >
-          Movies
+          Danh sách phim
         </NavLink>
       </header>
     </>

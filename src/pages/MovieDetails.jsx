@@ -13,10 +13,12 @@ const MovieDetails = () => {
   const { data: movie } = useSWR(tmdbAPI.getMovieDetails(movieId), fetcher);
   const { data: credits } = useSWR(tmdbAPI.getCredits(movieId), fetcher);
   const { data: videos } = useSWR(tmdbAPI.getVideos(movieId), fetcher);
-  const { data: similarMovies } = useSWR(
+  const { data: similarMoviesRes } = useSWR(
     tmdbAPI.getSimilarMovies(movieId),
     fetcher
   );
+
+  const similarMovies = similarMoviesRes?.results || [];
 
   return (
     <>
@@ -30,7 +32,7 @@ const MovieDetails = () => {
               )})`,
             }}
           >
-            <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-70 rounded-xl"></div>
 
             <div className="w-full h-[400px] max-w-[800px] mx-auto absolute -translate-x-2/4 left-1/2 bottom-0 translate-y-2/4">
               <img
@@ -42,7 +44,7 @@ const MovieDetails = () => {
           </div>
 
           <div className="flex flex-col gap-16 text-center max-w-[1280px] mx-auto">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-10">
               <h2>{movie.title}</h2>
 
               <div className="flex gap-3 justify-center">
@@ -91,7 +93,7 @@ const MovieDetails = () => {
                     <p className="text-lg font-bold">{video.name}</p>
                     <iframe
                       src={`https://www.youtube.com/embed/${video.key}`}
-                      title="ReactJS: 01-02 Bốn cách khác nhau để code ReactJS"
+                      title={video.name}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                       className="w-full h-full object-fill border-none"
@@ -101,11 +103,11 @@ const MovieDetails = () => {
               </div>
             )}
 
-            <h3>Phim tương tự</h3>
-            <div className="movie-list">
+            <h3>Phim được gợi ý</h3>
+            <div className="movie-list text-left">
               <Swiper grabCursor={"true"} slidesPerView={"auto"}>
-                {similarMovies.results.length > 0 &&
-                  similarMovies.results.map((movie) => (
+                {similarMovies.length > 0 &&
+                  similarMovies.map((movie) => (
                     <SwiperSlide key={movie.id}>
                       <MovieCard movie={movie} />
                     </SwiperSlide>
